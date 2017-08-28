@@ -14,10 +14,16 @@ public class Player : MonoBehaviour
 
     int LaneNumber = 2;
 
+    bool isHitting = false;      //ダメージを受けたか
+
+    //SpriteRendererコンポーネント
+    SpriteRenderer spRenderer;
+
     // Use this for initialization
     void Start()
     {
 
+        spRenderer = GetComponent<SpriteRenderer>();
 
     }
 
@@ -74,44 +80,78 @@ public class Player : MonoBehaviour
     {
 
         string layerName = LayerMask.LayerToName(col.gameObject.layer);
-
-        if (layerName == "CollisionPlayer")
+        if (isHitting == false)
         {
-            Debug.Log("いいぞ。01");
-            HP -= 10;
+            if (layerName == "CollisionPlayer")
+            {
+                Debug.Log("いいぞ。01");
+                StartCoroutine("Damage");
+                HP -= 10;
+            }
+
+            if (layerName == "CollisionFire")
+            {
+                Debug.Log("いいぞ。02");
+                StartCoroutine("Damage");
+                FireHP -= 1;
+            }
+
+            if (layerName == "CollisionAll")
+            {
+                Debug.Log("いいぞ。03");
+                StartCoroutine("Damage");
+                HP -= 10;
+                FireHP -= 1;
+            }
+
+            if (layerName == "CollisionDead")
+            {
+                Debug.Log("いいぞ。04");
+                HP -= 100;
+                FireHP -= 3;
+            }
+
+            if (layerName == "CollisionHeal")
+            {
+                Debug.Log("いいぞ。05");
+                HP += 30;
+            }
+
+            if (layerName == "CollisionFireHeal")
+            {
+                Debug.Log("いいぞ。06");
+                FireHP += 1;
+            }
         }
 
-        if (layerName == "CollisionFire")
+    }
+
+    IEnumerator Damage()
+    {
+
+        //while文を8回ループ
+        int count = 8;
+
+        isHitting = true;
+
+        while (count > 0)
         {
-            Debug.Log("いいぞ。02");
-            FireHP -= 1;
+            //透明にする
+            spRenderer.material.color = new Color(1, 1, 1, 0);
+
+            //0.05秒待つ
+            yield return new WaitForSeconds(0.05f);
+
+            //元に戻す
+            spRenderer.material.color = new Color(1, 1, 1, 1);
+
+            //0.05秒待つ
+            yield return new WaitForSeconds(0.05f);
+
+            count--;
         }
 
-        if (layerName == "CollisionAll")
-        {
-            Debug.Log("いいぞ。03");
-            HP -= 10;
-            FireHP -= 1;
-        }
-
-        if (layerName == "CollisionDead")
-        {
-            Debug.Log("いいぞ。04");
-            HP -= 100;
-            FireHP -= 3;
-        }
-
-        if (layerName == "CollisionHeal")
-        {
-            Debug.Log("いいぞ。05");
-            HP += 30;
-        }
-
-        if (layerName == "CollisionFireHeal")
-        {
-            Debug.Log("いいぞ。06");
-            FireHP += 1;
-        }
+        isHitting = false;
 
     }
 
