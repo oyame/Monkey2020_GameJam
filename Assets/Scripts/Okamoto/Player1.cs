@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player1 : MonoBehaviour {
 
     public int HP;      //スタミナ
     public int FireHP;  //聖火
 
     public float speed = 5;     //移動スピード
-  
+
+   public int jampstas=0;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
         
-        float x = Input.GetAxisRaw("Horizontal"); ;
+        float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
 
         // 移動する向きを求める
@@ -27,29 +29,49 @@ public class Player : MonoBehaviour {
         // 移動する向きとスピードを代入する
         GetComponent<Rigidbody2D>().velocity = direction * speed;
 
-
+        if (Input.GetKeyDown("space"))
+        {
+            Debug.Log("いいぞ。11");
+            jampstas = 1;
+            
+        }
 
 
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerEnter2D(Collider2D col )
     {
 
         string layerName = LayerMask.LayerToName(col.gameObject.layer);
-
-        if (layerName == "CollisionPlayer")
+        if (jampstas==0)
         {
-            Debug.Log("いいぞ。01");
-            HP -= 10;
-        }
+            if (layerName == "CollisionPlayer")
+            {
+                Debug.Log("いいぞ。01");
+                HP -= 10;
+            }
 
-        if (layerName == "CollisionFire")
+            if (layerName == "CollisionFire")
+            {
+                Debug.Log("いいぞ。02");
+                FireHP -= 1;
+            }
+        }
+        if (jampstas == 1)
         {
-            Debug.Log("いいぞ。02");
-            FireHP -= 1;
-        }
+            if (/*layerName == "CollisionPlayer"&&*/tag == "BIG")
+            {
+                Debug.Log("いいぞ。01");
+                HP -= 10;
+            }
 
-        if (layerName == "CollisionAll")
+            if (layerName == "CollisionFire"&&tag=="BIG")
+            {
+                Debug.Log("いいぞ。02");
+                FireHP -= 1;
+            }
+        }
+            if (layerName == "CollisionAll")
         {
             Debug.Log("いいぞ。03");
             HP -= 10;
@@ -76,5 +98,6 @@ public class Player : MonoBehaviour {
         }
 
     }
+
 
 }
