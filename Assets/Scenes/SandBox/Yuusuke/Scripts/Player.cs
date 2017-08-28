@@ -5,32 +5,67 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
     public int HP;      //スタミナ
-    public int FireHP;  //聖火
+    public int FireHP;  //聖火  
+    
+    public GameObject FirstLane;
+    public GameObject SecondLane;
+    public GameObject ThirdLane;
 
-    public float speed = 5;     //移動スピード
-  
+    int LaneNumber = 2;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    // Use this for initialization
+    void Start () {
+        
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        
-        float x = Input.GetAxisRaw("Horizontal"); ;
-        float y = Input.GetAxisRaw("Vertical");
 
-        // 移動する向きを求める
-        Vector2 direction = new Vector2(x, y).normalized;
-
-        // 移動する向きとスピードを代入する
-        GetComponent<Rigidbody2D>().velocity = direction * speed;
-
-
-
+        LaneMove();
 
     }
+
+    void LaneMove()
+    {
+        Vector3 nowPos = transform.position;                    //現在の座標
+        Vector3 FirstLanePos = FirstLane.transform.position;    //1レーン目の座標
+        Vector3 SecondLanePos = SecondLane.transform.position;  //2レーン目の座標
+        Vector3 ThirdLanePos = ThirdLane.transform.position;    //3レーン目の座標
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            LaneNumber -= 1;
+            if (LaneNumber < 1)
+            {
+                LaneNumber = 1;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            LaneNumber += 1;
+            if (LaneNumber > 3)
+            {
+                LaneNumber = 3;
+            }
+        }
+
+        switch (LaneNumber)
+        {
+            case 1:
+                transform.position = Vector3.Lerp(nowPos, FirstLanePos, Time.deltaTime * 10);
+                break;
+            case 2:
+                transform.position = Vector3.Lerp(nowPos, SecondLanePos, Time.deltaTime * 10);
+                break;
+            case 3:
+                transform.position = Vector3.Lerp(nowPos, ThirdLanePos, Time.deltaTime * 10);
+                break;
+        }
+        
+    }
+
 
     void OnTriggerEnter2D(Collider2D col)
     {

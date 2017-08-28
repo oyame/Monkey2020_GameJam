@@ -11,6 +11,11 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+
+        Vector3 nowPos = transform.position;
+
+        nowPos.x -= 0.1f;
+
+        transform.position = nowPos;
+    }
 }
