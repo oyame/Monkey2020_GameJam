@@ -64,12 +64,12 @@ public class UIManager : MonoBehaviour {
 
         root = goalPos.x - playerPos.x;
 
-        root2 = ((root + 2) * 100) - 48;
+        root2 = ((root + 2) * 100) - 47;
 
-        
+        if (root2 <= 0)
+            root2 = 0;
 
         _textDistance.text = Mathf.Floor(root2).ToString();
-        Debug.Log(root2);
 
     }
 }

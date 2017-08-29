@@ -42,13 +42,16 @@ public class OyamaPlayer : MonoBehaviour
 
     private AudioSource audioSource;
 
+    public GameObject NureNure;
+    bool NureFlag = false;
+
 
     bool isHitting = false;      //ダメージを受けたか
 
     // Use this for initialization
     void Start()
     {
-        
+        NureNure.SetActive(false);
         
     }
 
@@ -175,6 +178,8 @@ public class OyamaPlayer : MonoBehaviour
 
                 audioSource.clip = audioClip2;
 
+                NureFlag = true;
+
                 StartCoroutine("Damage");
 
                 audioSource.Play();
@@ -258,6 +263,8 @@ public class OyamaPlayer : MonoBehaviour
 
         isHitting = true;
 
+        if (NureFlag) NureNure.SetActive(true);
+
         while (count > 0)
         {
             //透明にする
@@ -279,6 +286,8 @@ public class OyamaPlayer : MonoBehaviour
             count--;
         }
 
+        NureNure.SetActive(false);
+        NureFlag = false;
         isHitting = false;
 
     }
