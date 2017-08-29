@@ -25,6 +25,25 @@ public class OyamaPlayer : MonoBehaviour
     float sumTime = 0;
     float leftLegRota, rightLegRota;
 
+    //オーディオ
+    public AudioClip audioClip1;
+
+    public AudioClip audioClip2;
+
+    public AudioClip audioClip3;
+
+    public AudioClip audioClip4;
+
+    public AudioClip audioClip5;
+
+    public AudioClip audioClip6;
+
+    public AudioClip audioClip7;
+
+    private AudioSource audioSource;
+
+
+
 
     // Use this for initialization
     void Start()
@@ -41,6 +60,12 @@ public class OyamaPlayer : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Space) && jumpFlag == false)
         {
+            audioSource = gameObject.GetComponent<AudioSource>();
+
+            audioSource.clip = audioClip7;
+
+            audioSource.Play();
+
             jumpFlag = true;
             HP -= 5;
             //1.5秒後にジャンプフラグを切ります
@@ -121,8 +146,19 @@ public class OyamaPlayer : MonoBehaviour
 
         if (layerName == "CollisionPlayer")
         {
+            //再生
+
+            audioSource = gameObject.GetComponent<AudioSource>();
+
+            audioSource.clip = audioClip1;
+
+            audioSource.Play();
+
             Debug.Log("いいぞ。01");
             HP -= 10;
+
+           
+
         }
         
         //水関係はジャンプで回避可能
@@ -130,6 +166,14 @@ public class OyamaPlayer : MonoBehaviour
         {
             Debug.Log("いいぞ。02");
             FireHP -= 1;
+
+            //再生
+
+            audioSource = gameObject.GetComponent<AudioSource>();
+
+            audioSource.clip = audioClip2;
+
+            audioSource.Play();
         }
 
         if (layerName == "CollisionAll")
@@ -137,6 +181,15 @@ public class OyamaPlayer : MonoBehaviour
             Debug.Log("いいぞ。03");
             HP -= 10;
             FireHP -= 1;
+
+            //再生
+
+            audioSource = gameObject.GetComponent<AudioSource>();
+
+            audioSource.clip = audioClip3;
+
+            audioSource.Play();
+
         }
 
         //海面はジャンプ中なら回避判定
@@ -145,6 +198,14 @@ public class OyamaPlayer : MonoBehaviour
             Debug.Log("いいぞ。04");
             HP -= 100;
             FireHP -= 3;
+
+            //再生
+
+            audioSource = gameObject.GetComponent<AudioSource>();
+
+            audioSource.clip = audioClip4;
+
+            audioSource.Play();
         }
 
         if (layerName == "CollisionHeal")
@@ -153,6 +214,14 @@ public class OyamaPlayer : MonoBehaviour
             HP += 30;
             if (HP > 100) HP = 100;
             Destroy(col.gameObject);
+
+            //再生
+
+            audioSource = gameObject.GetComponent<AudioSource>();
+
+            audioSource.clip = audioClip5;
+
+            audioSource.Play();
         }
 
         if (layerName == "CollisionFireHeal")
@@ -162,6 +231,14 @@ public class OyamaPlayer : MonoBehaviour
             if (jumpFlag == false) { HP -= 5; }
             FireHP += 1;
             if (FireHP > 3) FireHP = 3;
+
+            //再生
+
+            audioSource = gameObject.GetComponent<AudioSource>();
+
+            audioSource.clip = audioClip6;
+
+            audioSource.Play();
         }
 
     }
