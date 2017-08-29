@@ -64,7 +64,7 @@ public class UIManager : MonoBehaviour {
 
         root = goalPos.x - playerPos.x;
 
-        root2 = ((root + 2) * 100) - 47;
+        root2 = ((root + 2) * 100) - 53;
 
         if (root2 <= 0)
             root2 = 0;
