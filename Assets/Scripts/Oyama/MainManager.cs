@@ -18,10 +18,41 @@ public class MainManager : MonoBehaviour {
 
     public GameObject GameOverText;
 
+    float[] RandomY = { 1, -1, -3 };
+
+    public GameObject behindObj, middleObj, frontObj;
+
+    void Awake()
+    {
+        int n = 20;
+
+        while (n > 0)
+        {
+            n--;
+            //レーンをランダムにY軸を移動させたい
+            int i = Random.Range(0, 3);
+
+            float tmp = RandomY[i];
+            RandomY[i] = RandomY[0];
+            RandomY[0] = tmp;
+
+        }
+
+        behindObj.transform.position = new Vector3(-7.5f, RandomY[0], 0);
+        middleObj.transform.position = new Vector3(-7.5f, RandomY[1], 0);
+        frontObj.transform.position = new Vector3(-7.5f, RandomY[2], 0);
+
+        //for (int i = 0; i < RandomY.Length; i++)
+        //{
+        //    Debug.Log(RandomY[i]);
+        //}
+    }
+
     // Use this for initialization
     void Start () {
-		
-	}
+
+        
+    }
 
     // Update is called once per frame
     void Update()
