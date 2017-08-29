@@ -7,10 +7,14 @@ public class UIManager : MonoBehaviour {
 
     public OyamaPlayer playerScript;
 
+    [SerializeField]
+    private Text _textDistance;
+
     public Transform player;
     public Transform goal;
 
-    public int root = 0;
+    float root = 0;
+    public float root2 = 0;
 
     public Image sutaminaBar;
     public GameObject HolyFire;
@@ -21,6 +25,7 @@ public class UIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
         holyFires = new SpriteRenderer[HolyFire.transform.childCount];
 
 		for(int i = 0; i < holyFires.Length; i++)
@@ -54,12 +59,15 @@ public class UIManager : MonoBehaviour {
         Vector3 playerPos = player.transform.position;
         Vector3 goalPos = goal.transform.position;
 
-        playerPos = Camera.main.ScreenToWorldPoint(player.transform.position);
+        //playerPos = Camera.main.ScreenToWorldPoint(player.transform.position);
         goalPos = Camera.main.ScreenToWorldPoint(goal.transform.position);
 
-        root = (int)goalPos.x - (int)playerPos.x;
+        root = goalPos.x - playerPos.x;
 
-        Debug.Log(root);
+        root2 = (root + 2) * 100;
+
+        _textDistance.text = root2.ToString();
+        Debug.Log(root2);
 
     }
 }
