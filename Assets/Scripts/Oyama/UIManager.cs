@@ -7,6 +7,11 @@ public class UIManager : MonoBehaviour {
 
     public OyamaPlayer playerScript;
 
+    public Transform player;
+    public Transform goal;
+
+    public int root = 0;
+
     public Image sutaminaBar;
     public GameObject HolyFire;
     SpriteRenderer[] holyFires;
@@ -39,5 +44,22 @@ public class UIManager : MonoBehaviour {
                 holyFires[i].sprite = TrueFire;
             }
         }
+
+        Root();
+
+    }
+
+    void Root()
+    {
+        Vector3 playerPos = player.transform.position;
+        Vector3 goalPos = goal.transform.position;
+
+        playerPos = Camera.main.ScreenToWorldPoint(player.transform.position);
+        goalPos = Camera.main.ScreenToWorldPoint(goal.transform.position);
+
+        root = (int)goalPos.x - (int)playerPos.x;
+
+        Debug.Log(root);
+
     }
 }
