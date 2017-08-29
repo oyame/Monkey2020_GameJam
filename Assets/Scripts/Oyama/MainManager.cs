@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MainManager : MonoBehaviour {
+
+    [SerializeField]
+    private Text _textCountdown;
 
     public GameObject stage;
 
@@ -51,12 +55,20 @@ public class MainManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        
+        Player.enabled = false;
+
+        _textCountdown.text = "";
+
+        StartCoroutine("CountDown");
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (_textCountdown.gameObject.active) return;
+        else Player.enabled = true;
+
         stage.transform.position -= new Vector3(stageSpeed, 0, 0);
 
         if (stage.transform.position.x < addSpeedPosX)
@@ -102,5 +114,30 @@ public class MainManager : MonoBehaviour {
     void BackTitle()
     {
         SceneManager.LoadScene(0);
+    }
+
+    IEnumerator CountDown()
+    {
+        _textCountdown.gameObject.SetActive(true);
+
+
+        _textCountdown.text = "3";
+        yield return new WaitForSeconds(1.0f);
+
+
+        _textCountdown.text = "2";
+        yield return new WaitForSeconds(1.0f);
+
+
+        _textCountdown.text = "1";
+        yield return new WaitForSeconds(1.0f);
+
+
+        _textCountdown.text = "GO!";
+        yield return new WaitForSeconds(1.0f);
+
+        _textCountdown.text = "";
+        _textCountdown.gameObject.SetActive(false);
+
     }
 }

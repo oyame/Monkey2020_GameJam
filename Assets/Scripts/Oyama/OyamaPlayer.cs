@@ -43,7 +43,7 @@ public class OyamaPlayer : MonoBehaviour
     private AudioSource audioSource;
 
 
-
+    bool isHitting = false;      //ダメージを受けたか
 
     // Use this for initialization
     void Start()
@@ -144,102 +144,142 @@ public class OyamaPlayer : MonoBehaviour
 
         string layerName = LayerMask.LayerToName(col.gameObject.layer);
 
-        if (layerName == "CollisionPlayer")
+        if (isHitting == false)
         {
-            //再生
+            if (layerName == "CollisionPlayer")
+            {
+                //再生
 
-            audioSource = gameObject.GetComponent<AudioSource>();
+                audioSource = gameObject.GetComponent<AudioSource>();
 
-            audioSource.clip = audioClip1;
+                audioSource.clip = audioClip1;
 
-            audioSource.Play();
+                audioSource.Play();
 
-            Debug.Log("いいぞ。01");
-            HP -= 10;
+                StartCoroutine("Damage");
 
-           
+                HP -= 10;
 
+
+
+            }
+
+            //水関係はジャンプで回避可能
+            if (layerName == "CollisionFire" && jumpFlag == false)
+            {
+                FireHP -= 1;
+
+                //再生
+
+                audioSource = gameObject.GetComponent<AudioSource>();
+
+                audioSource.clip = audioClip2;
+
+                StartCoroutine("Damage");
+
+                audioSource.Play();
+            }
+
+            if (layerName == "CollisionAll")
+            {
+                HP -= 10;
+                FireHP -= 1;
+
+                //再生
+
+                audioSource = gameObject.GetComponent<AudioSource>();
+
+                audioSource.clip = audioClip3;
+
+                StartCoroutine("Damage");
+
+                audioSource.Play();
+
+            }
+
+            //海面はジャンプ中なら回避判定
+            if (layerName == "CollisionDead" && jumpFlag == false)
+            {
+                HP -= 100;
+                FireHP -= 3;
+
+                //再生
+
+                audioSource = gameObject.GetComponent<AudioSource>();
+
+                audioSource.clip = audioClip4;
+
+                StartCoroutine("Damage");
+
+                audioSource.Play();
+            }
+
+            if (layerName == "CollisionHeal")
+            {
+                HP += 30;
+                if (HP > 100) HP = 100;
+                Destroy(col.gameObject);
+
+                //再生
+
+                audioSource = gameObject.GetComponent<AudioSource>();
+
+                audioSource.clip = audioClip5;
+
+                audioSource.Play();
+            }
+
+            if (layerName == "CollisionFireHeal")
+            {
+                //ジャンプでくぐってなければスタミナにダメージ
+                if (jumpFlag == false) {
+                    StartCoroutine("Damage");
+                    HP -= 5;
+                }
+                FireHP += 1;
+                if (FireHP > 3) FireHP = 3;
+
+                //再生
+
+                audioSource = gameObject.GetComponent<AudioSource>();
+
+                audioSource.clip = audioClip6;
+
+                audioSource.Play();
+            }
         }
-        
-        //水関係はジャンプで回避可能
-        if (layerName == "CollisionFire" && jumpFlag == false)
+    }
+
+    IEnumerator Damage()
+    {
+
+        //while文を8回ループ
+        int count = 8;
+
+        isHitting = true;
+
+        while (count > 0)
         {
-            Debug.Log("いいぞ。02");
-            FireHP -= 1;
+            //透明にする
+            BodyRenderer.material.color = new Color(1, 1, 1, 0);
+            LeftLegRenderer.material.color = new Color(1, 1, 1, 0);
+            RightLegRenderer.material.color = new Color(1, 1, 1, 0);
 
-            //再生
+            //0.05秒待つ
+            yield return new WaitForSeconds(0.05f);
 
-            audioSource = gameObject.GetComponent<AudioSource>();
+            //元に戻す
+            BodyRenderer.material.color = new Color(1, 1, 1, 1);
+            LeftLegRenderer.material.color = new Color(1, 1, 1, 1);
+            RightLegRenderer.material.color = new Color(1, 1, 1, 1);
 
-            audioSource.clip = audioClip2;
+            //0.05秒待つ
+            yield return new WaitForSeconds(0.05f);
 
-            audioSource.Play();
+            count--;
         }
 
-        if (layerName == "CollisionAll")
-        {
-            Debug.Log("いいぞ。03");
-            HP -= 10;
-            FireHP -= 1;
-
-            //再生
-
-            audioSource = gameObject.GetComponent<AudioSource>();
-
-            audioSource.clip = audioClip3;
-
-            audioSource.Play();
-
-        }
-
-        //海面はジャンプ中なら回避判定
-        if (layerName == "CollisionDead" && jumpFlag == false)
-        {
-            Debug.Log("いいぞ。04");
-            HP -= 100;
-            FireHP -= 3;
-
-            //再生
-
-            audioSource = gameObject.GetComponent<AudioSource>();
-
-            audioSource.clip = audioClip4;
-
-            audioSource.Play();
-        }
-
-        if (layerName == "CollisionHeal")
-        {
-            Debug.Log("いいぞ。05");
-            HP += 30;
-            if (HP > 100) HP = 100;
-            Destroy(col.gameObject);
-
-            //再生
-
-            audioSource = gameObject.GetComponent<AudioSource>();
-
-            audioSource.clip = audioClip5;
-
-            audioSource.Play();
-        }
-
-        if (layerName == "CollisionFireHeal")
-        {
-            Debug.Log("いいぞ。06");
-            //ジャンプでくぐってなければスタミナにダメージ
-            if (jumpFlag == false) { HP -= 5; }
-            FireHP += 1;
-            if (FireHP > 3) FireHP = 3;
-
-            //再生
-
-            audioSource = gameObject.GetComponent<AudioSource>();
-
-            audioSource.clip = audioClip6;
-
-            audioSource.Play();
-        }
+        isHitting = false;
 
     }
 
