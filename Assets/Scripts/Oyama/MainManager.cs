@@ -26,6 +26,11 @@ public class MainManager : MonoBehaviour {
 
     public GameObject behindObj, middleObj, frontObj;
 
+    public GameObject GameOverObj;
+    GameObject gameoverCorsol;
+
+    bool gameoverFlag = false;
+
     void Awake()
     {
         int n = 20;
@@ -56,6 +61,8 @@ public class MainManager : MonoBehaviour {
     void Start () {
 
         Player.enabled = false;
+        gameoverCorsol = GameOverObj.transform.FindChild("カーソル").gameObject;
+        GameOverObj.SetActive(false);
 
         _textCountdown.text = "";
 
@@ -81,7 +88,7 @@ public class MainManager : MonoBehaviour {
         if(Player.HP <= 0 || Player.FireHP == 0)
         {
             Player.enabled = false;
-            stageSpeed = 0;
+            stageSpeed = 0.05f;
 
             fadeSprite.color += new Color(-1, -1, -1, 0.01f);
 
@@ -90,9 +97,46 @@ public class MainManager : MonoBehaviour {
                 if (GameOverText.transform.position.y < 0)
                 {
                     GameOverText.transform.position += new Vector3(0, 0.2f, 0);
+
                 }
                 else {
-                    Invoke("BackTitle", 1);
+                    if (gameoverFlag == false)
+                    {
+                        gameoverFlag = true;
+                        Invoke("GameOverSelect", 1);
+                    }
+                }
+
+                if (GameOverObj.active)
+                {
+                    if (Input.GetKeyDown(KeyCode.UpArrow))
+                    {
+
+                        gameoverCorsol.transform.position = new Vector3(0, -2, 0);
+
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.DownArrow))
+                    {
+                        gameoverCorsol.transform.position = new Vector3(0, -4, 0);
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        switch ((int)gameoverCorsol.transform.position.y)
+                        {
+                            //リトライ
+                            case -2:
+                                SceneManager.LoadScene(1);
+                                break;
+
+                            //タイトル
+                            case -4:
+                                SceneManager.LoadScene(0);
+                                break;
+
+                        }
+                    }
                 }
             }
         }
@@ -111,9 +155,9 @@ public class MainManager : MonoBehaviour {
         }
     }
 
-    void BackTitle()
+    void GameOverSelect()
     {
-        SceneManager.LoadScene(0);
+        GameOverObj.SetActive(true);
     }
 
     IEnumerator CountDown()

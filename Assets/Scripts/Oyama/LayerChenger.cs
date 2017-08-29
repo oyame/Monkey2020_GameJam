@@ -83,8 +83,4 @@ public class LayerChenger : MonoBehaviour {
 
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
