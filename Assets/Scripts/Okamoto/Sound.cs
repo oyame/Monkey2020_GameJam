@@ -17,6 +17,7 @@ public class Sound : MonoBehaviour {
     public AudioClip audioClip5;
 
     public AudioClip audioClip6;
+
     private AudioSource audioSource;
 
 
@@ -41,36 +42,42 @@ public class Sound : MonoBehaviour {
         {
             audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.clip = audioClip1;
+            audioSource.Play();
         }
 
         if (layerName == "CollisionFire")
         {
             audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.clip = audioClip2;
+            audioSource.Play();
         }
 
         if (layerName == "CollisionAll")
         {
             audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.clip = audioClip3;
+            audioSource.Play();
         }
 
         if (layerName == "CollisionDead")
         {
             audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.clip = audioClip4;
+            audioSource.Play();
         }
 
         if (layerName == "CollisionHeal")
         {
             audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.clip = audioClip5;
+            audioSource.Play();
         }
 
         if (layerName == "CollisionFireHeal")
         {
             audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.clip = audioClip6;
+            audioSource.Play();
         }
 
     }
