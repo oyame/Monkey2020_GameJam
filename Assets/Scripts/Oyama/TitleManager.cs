@@ -19,6 +19,7 @@ public class TitleManager : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Space) && startFlag == false)
         {
+            GetComponent<AudioSource>().Play();
             startFlag = true;
         }
 
