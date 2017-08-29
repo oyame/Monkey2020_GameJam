@@ -88,7 +88,7 @@ public class MainManager : MonoBehaviour {
         if(Player.HP <= 0 || Player.FireHP == 0)
         {
             Player.enabled = false;
-            stageSpeed = 0.05f;
+            stageSpeed = 0;
 
             fadeSprite.color += new Color(-1, -1, -1, 0.01f);
 
